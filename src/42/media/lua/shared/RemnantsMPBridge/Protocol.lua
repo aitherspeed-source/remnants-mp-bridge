@@ -4,7 +4,7 @@ RemnantsMPBridge.Protocol = RemnantsMPBridge.Protocol or {}
 local Protocol = RemnantsMPBridge.Protocol
 
 Protocol.MODULE = "RemnantsMPBridge"
-Protocol.BRIDGE_VERSION = "0.1.2"
+Protocol.BRIDGE_VERSION = "0.1.3"
 Protocol.PROTOCOL_VERSION = 1
 Protocol.TARGET_GAME_VERSION = "42.19.0"
 Protocol.REPLICA_API_VERSION = "1"

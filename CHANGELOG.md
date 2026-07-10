@@ -2,6 +2,13 @@
 
 This log records repository changes, not unverified runtime claims.
 
+## 0.1.3 — Deterministic multiplayer file packaging
+
+- Fixed the client/server mismatch caused by GitHub's Windows runner converting
+  release Lua files to CRLF while local server files used LF.
+- Normalize packaged Lua and `mod.info` files to UTF-8 without BOM and LF.
+- Added Git attributes and an exact-byte release regression test.
+
 ## 0.1.2 — Joined-client movement replay
 
 - Recorded successful host/guest visibility of the shared replica.

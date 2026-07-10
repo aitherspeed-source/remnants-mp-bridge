@@ -1,5 +1,18 @@
 # Test Results
 
+## 2026-07-10 — v0.1.2 multiplayer file mismatch diagnosis
+
+Result: FAIL, root cause confirmed.
+
+- Both host and guest reported version 0.1.2 and both games had been closed.
+- Installed host `Protocol.lua` SHA-256 was
+  `8BC3A7A56FEEBABFC08CC708EAA829BFB33656E9BDFCBBDB850AF21A76BCEE7E`.
+- GitHub release `Protocol.lua` SHA-256 was
+  `69B33D646CD6869404590C978949EE61F12C632EC78B87F88D06137C6CC469D2`.
+- After normalizing CRLF to LF, contents were identical. Project Zomboid had
+  compared the byte-different files.
+- Version 0.1.3 normalizes packaged runtime text and adds an exact-byte test.
+
 ## 2026-07-10 — Guest visibility retest
 
 Result: PASS for shared body visibility.

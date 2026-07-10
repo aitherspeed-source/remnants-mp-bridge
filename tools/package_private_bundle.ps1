@@ -32,6 +32,15 @@ New-Item -ItemType Directory -Path $versioned | Out-Null
 Copy-Item -Path (Join-Path $source '*') -Destination $versioned -Recurse
 Copy-Item -LiteralPath $agent -Destination (Join-Path $payload 'RemnantsMPBridgeAgent.jar')
 
+# Project Zomboid compares client/server mod files byte-for-byte. Normalize the
+# runtime text payload so Git checkout settings cannot create false mismatches.
+foreach ($runtimeText in Get-ChildItem -LiteralPath $runtimeMod -Recurse -File |
+        Where-Object { $_.Extension -eq '.lua' -or $_.Name -eq 'mod.info' }) {
+    $text = [IO.File]::ReadAllText($runtimeText.FullName)
+    $text = $text.Replace("`r`n", "`n").Replace("`r", "`n")
+    [IO.File]::WriteAllText($runtimeText.FullName, $text, [Text.UTF8Encoding]::new($false))
+}
+
 $checksumLines = Get-ChildItem -LiteralPath $stage -Recurse -File |
     Sort-Object FullName |
     ForEach-Object {

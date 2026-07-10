@@ -1,0 +1,8 @@
+*.lua text eol=lf
+mod.info text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
+*.yml text eol=lf
+*.bat text eol=crlf
+*.jar binary

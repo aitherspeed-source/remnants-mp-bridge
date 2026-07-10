@@ -30,7 +30,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         metadata = read("mod.info")
         self.assertIn("id=RemnantsMPBridge", metadata)
         self.assertIn("require=ProjectRemnants", metadata)
-        self.assertIn("version=0.1.2", metadata)
+        self.assertIn("version=0.1.3", metadata)
         self.assertIn("versionMin=42.19.0", metadata)
 
     def test_protocol_is_versioned_and_pinned(self):
@@ -219,7 +219,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertNotIn("NPCFW.jar' -Destination", packager)
 
     def test_private_bundle_zip_contains_only_bridge_runtime(self):
-        bundle = ROOT / "dist/RemnantsMPBridge-0.1.2.zip"
+        bundle = ROOT / "dist/RemnantsMPBridge-0.1.3.zip"
         self.assertTrue(bundle.exists())
         with zipfile.ZipFile(bundle) as archive:
             names = archive.namelist()
@@ -227,6 +227,18 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertTrue(any(name.endswith("RemnantsMPBridgeAgent.jar") for name in names))
         self.assertTrue(any(name.endswith("CHECKSUMS.sha256") for name in names))
         self.assertFalse(any(name.endswith(("NPCFW.jar", "projectzomboid.jar")) for name in names))
+
+    def test_release_runtime_text_is_lf_and_matches_source(self):
+        bundle = ROOT / "dist/RemnantsMPBridge-0.1.3.zip"
+        with zipfile.ZipFile(bundle) as archive:
+            protocol_name = next(
+                name for name in archive.namelist()
+                if name.endswith("payload/RemnantsMPBridge/42/media/lua/shared/RemnantsMPBridge/Protocol.lua")
+            )
+            released = archive.read(protocol_name)
+        source = (SRC / "media/lua/shared/RemnantsMPBridge/Protocol.lua").read_bytes()
+        self.assertNotIn(b"\r\n", released)
+        self.assertEqual(released, source)
 
     def test_public_release_updater_is_checksum_verified(self):
         updater = (ROOT / "tools/friend_bundle/tools/update_bridge.ps1").read_text(encoding="utf-8")
