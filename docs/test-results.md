@@ -13,6 +13,18 @@ Result: PASS for shared body visibility.
 - Version 0.1.2 therefore schedules a new bounded sequence once each new client
   confirms successful creation; runtime movement parity remains pending.
 
+## 2026-07-10 — Public v0.1.2 release verification
+
+Result: publication/download integrity PASS; movement runtime pending.
+
+- Release workflow completed successfully using `actions/checkout@v5`.
+- Public asset: `RemnantsMPBridge-0.1.2.zip`, 32,873 bytes.
+- Published SHA-256:
+  `B2E5096E77ECD4044F491592770BDD403EFFCF51AD966614B4A8B6875A2C3107`.
+- Public `latest.json` reports version 0.1.2 and the correct tag asset URL.
+- A fresh download matched the manifest checksum.
+- Twenty-one static tests pass.
+
 ## 2026-07-10 — Version 0.1.1 release candidate
 
 Result: static/package PASS; GitHub publication and runtime retest pending.

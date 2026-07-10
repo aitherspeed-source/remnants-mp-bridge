@@ -51,11 +51,13 @@ same revisions together.
 
 - Public repository: `https://github.com/aitherspeed-source/remnants-mp-bridge`
 - Default branch: `main`
-- Latest release: `v0.1.1`
+- Latest release: `v0.1.2`
 - Git history is now available and must be inspected at session start.
-- The release publishes `RemnantsMPBridge-0.1.1.zip` and `latest.json`; the
+- The release publishes `RemnantsMPBridge-0.1.2.zip` and `latest.json`; the
   permanent updater verifies the manifest SHA-256 before installation.
 - A local end-to-end updater run from installed 0.1.0 to public 0.1.1 passed.
+- Twenty-one static tests pass for 0.1.2; two-player movement replay is the next
+  runtime checkpoint.
 
 ## Next exact task
 
