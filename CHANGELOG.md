@@ -1,0 +1,68 @@
+# Changelog
+
+This log records repository changes, not unverified runtime claims.
+
+## 0.1.1 — Public updater and guest retry correction
+
+- Added the delayed bounded guest replica-create retry.
+- Added a permanent checksum-verified GitHub Release updater.
+- Added public repository README, release workflow, and repository hygiene.
+- Made bundle names derive from `mod.info` version.
+- Expanded the static suite to 20 passing tests.
+
+## 2026-07-10 — Guest streamed-cell retry correction
+
+- Recorded the first guest attempt: handshake and shared snapshot succeeded,
+  but local creation failed because the host-area square was not loaded.
+- Replaced three immediate retries with up to twenty deliveries spaced three
+  seconds apart.
+- Preserved the per-player delivery command so delayed retries use the correct
+  create/update packet.
+- Added a regression test for bounded delayed cell-loading retries.
+
+## 2026-07-10 — Private friend installer bundle
+
+- Added a double-click Windows installer and uninstaller.
+- Added automatic Steam library and Project Zomboid discovery.
+- Added checks for the Project Remnants Workshop payload and Java launch entries.
+- When those Java entries are missing, the bundle now runs Project Remnants'
+  own Workshop-supplied installer automatically, then verifies its result before
+  installing the bridge.
+- Added backups for the local mod and `ProjectZomboid64.json` plus install checks.
+- Added a reproducible private ZIP packager and SHA-256 manifest.
+- Verified the ZIP contains no `NPCFW.jar` or Project Zomboid jar.
+- Expanded the static suite from 16 to 18 passing tests.
+
+## 2026-07-10 — Shared inert replica topology
+
+- Replaced username-derived test IDs with `bridge-test-shared-001`.
+- Added broadcast updates to all accepted online clients and late-join delivery
+  of the current canonical snapshot.
+- Added explicit `replicaDestroy` client/server lifecycle handling.
+- Added accepted-handshake cleanup/reconciliation and server presence tracking.
+- Added debug-gated packet, duplicate, invalid-lookup, revision, and spawn-source
+  diagnostics.
+- Expanded the static suite from 14 to 16 passing tests.
+- Deployed the verified Lua build locally with an automatic backup of the prior
+  deployment; source/deployment hashes match.
+- Runtime host and guest verification remains pending.
+
+## 2026-07-10 — Project continuity baseline
+
+- Added the long-term operating manual and continuity documents.
+- Recorded the repository audit, actual packet/ownership model, system status,
+  risks, accepted decisions, phased roadmap, and repeatable multiplayer tests.
+- Established Phase 1A shared inert replica lifecycle as the active milestone.
+- No gameplay, networking, Java, save, installation, or packaging code changed.
+
+## Existing implementation summarized from repository evidence
+
+- Added isolated `RemnantsMPBridge` Build 42 layout and dependency metadata.
+- Added protocol 1 handshake and replica snapshot validation.
+- Added server session registry, directed inert create/update test, rate limiting,
+  bounded delivery, and scripted transform sequence.
+- Added client handshake retry, replica application, revision filtering,
+  acknowledgements, diagnostics, and map-load cleanup.
+- Added independent replica API version 1 Java agent and reversible tools.
+- Recorded successful solo hosted handshake, visible replica, and transform
+  transport checkpoints; guest multiplayer remains unverified.

@@ -1,0 +1,5 @@
+dist/
+java/build/classes/
+tests/__pycache__/
+*.pyc
+*.codex-backup-*
