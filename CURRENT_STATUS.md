@@ -22,8 +22,8 @@ lifecycle spike; it is not yet a gameplay bridge.
   handshake reconciliation, presence tracking, and Phase 1 diagnostics are
   implemented but have not been run in-game.
 - Nineteen static tests pass as of this update.
-- Version 0.1.1 adds the delayed guest cell-loading correction and a checksum-
-  verified GitHub Release updater. Twenty static tests pass.
+- Version 0.1.1's delayed cell-loading correction succeeded: the invited guest
+  now sees the same shared test replica as the host.
 - Current Lua source is deployed to the local root and versioned Build 42 mod
   folders; SHA-256 comparisons match. The previous deployment is preserved as
   `RemnantsMPBridge.codex-backup-20260710-155453-989`.
@@ -38,10 +38,9 @@ lifecycle spike; it is not yet a gameplay bridge.
 
 ## Currently being worked on
 
-The first guest attempt failed after a successful handshake because the guest
-replica API could not create at an unloaded host-area square. Delayed bounded
-retries are implemented. Public repository and release publication are in
-progress; runtime verification of the correction remains next.
+Version 0.1.2 movement replay is in progress. Each newly confirmed client gets
+one bounded server-driven movement sequence so host and guest can observe the
+same revisions together.
 
 ## Blocked
 
@@ -60,10 +59,9 @@ progress; runtime verification of the correction remains next.
 
 ## Next exact task
 
-Install the rebuilt bridge on both machines, restart the Host session, invite
-the guest, teleport the guest to the host promptly, and verify that a delayed
-retry changes `api-returned-false` to `created=true`. Do not add further systems
-before recording that result.
+Publish/install 0.1.2, restart both clients, join and teleport together, then
+confirm that guest creation schedules six shared transform revisions after a
+three-second delay. Compare both views and logs. Do not add follow AI yet.
 
 ## Files expected to be involved
 

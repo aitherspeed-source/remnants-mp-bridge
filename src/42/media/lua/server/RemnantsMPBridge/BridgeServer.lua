@@ -13,6 +13,7 @@ Server.HELLO_RATE_LIMIT_MS = 1000
 Server.MAX_REPLICA_DELIVERIES = 20
 Server.REPLICA_RETRY_INTERVAL_MS = 3000
 Server.MOVEMENT_INITIAL_DELAY_MS = 10000
+Server.MOVEMENT_JOIN_DELAY_MS = 3000
 Server.MOVEMENT_INTERVAL_MS = 3000
 Server.MOVEMENT_UPDATE_COUNT = 6
 
@@ -313,11 +314,19 @@ function Server.onReplicaResult(playerObj, args)
         print("[RemnantsMPBridge] replica delivery exhausted player=" .. key
             .. " bridgeId=" .. replica.bridgeId
             .. " deliveries=" .. tostring(deliveries))
-    elseif created and replica.updatesRemaining == 0 and replica.revision == 1 then
+    elseif created then
+        replica.movementScheduledClients = replica.movementScheduledClients or {}
+        if replica.movementScheduledClients[key] then return end
+        replica.movementScheduledClients[key] = true
         replica.updatesRemaining = Server.MOVEMENT_UPDATE_COUNT
-        replica.nextMoveAt = nowMs() + Server.MOVEMENT_INITIAL_DELAY_MS
+        local delay = replica.revision == 1
+            and Server.MOVEMENT_INITIAL_DELAY_MS
+            or Server.MOVEMENT_JOIN_DELAY_MS
+        replica.nextMoveAt = nowMs() + delay
         print("[RemnantsMPBridge] scheduled " .. tostring(replica.updatesRemaining)
             .. " transform updates for " .. replica.bridgeId
+            .. " confirmedClient=" .. key
+            .. " delayMs=" .. tostring(delay)
             .. " pathSquares=" .. tostring(#(replica.path or {})))
     end
 end

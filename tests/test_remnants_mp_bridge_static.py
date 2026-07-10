@@ -30,7 +30,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         metadata = read("mod.info")
         self.assertIn("id=RemnantsMPBridge", metadata)
         self.assertIn("require=ProjectRemnants", metadata)
-        self.assertIn("version=0.1.1", metadata)
+        self.assertIn("version=0.1.2", metadata)
         self.assertIn("versionMin=42.19.0", metadata)
 
     def test_protocol_is_versioned_and_pinned(self):
@@ -118,6 +118,14 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertIn("if retryAt and now >= retryAt then", server)
         self.assertIn("replica delivery exhausted", server)
         self.assertNotIn("Server.sendReplica(playerObj, replica, replica.lastCommand)", server)
+
+    def test_newly_confirmed_guest_replays_bounded_movement(self):
+        server = read("media/lua/server/RemnantsMPBridge/BridgeServer.lua")
+        self.assertIn("Server.MOVEMENT_JOIN_DELAY_MS = 3000", server)
+        self.assertIn("replica.movementScheduledClients", server)
+        self.assertIn("if replica.movementScheduledClients[key] then return end", server)
+        self.assertIn("or Server.MOVEMENT_JOIN_DELAY_MS", server)
+        self.assertIn('.. " confirmedClient=" .. key', server)
 
     def test_phase_one_diagnostics_are_debug_gated(self):
         protocol = read("media/lua/shared/RemnantsMPBridge/Protocol.lua")
@@ -211,7 +219,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertNotIn("NPCFW.jar' -Destination", packager)
 
     def test_private_bundle_zip_contains_only_bridge_runtime(self):
-        bundle = ROOT / "dist/RemnantsMPBridge-0.1.1.zip"
+        bundle = ROOT / "dist/RemnantsMPBridge-0.1.2.zip"
         self.assertTrue(bundle.exists())
         with zipfile.ZipFile(bundle) as archive:
             names = archive.namelist()

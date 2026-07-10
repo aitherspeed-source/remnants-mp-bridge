@@ -1,5 +1,18 @@
 # Test Results
 
+## 2026-07-10 — Guest visibility retest
+
+Result: PASS for shared body visibility.
+
+- Host and Steam-invited guest loaded into `NPCMPTest`.
+- Guest was teleported to the host.
+- After the delayed cell-loading retry correction, the guest could see the same
+  shared test replica as the host.
+- Movement parity was not observed because the original movement sequence ended
+  before guest loading completed.
+- Version 0.1.2 therefore schedules a new bounded sequence once each new client
+  confirms successful creation; runtime movement parity remains pending.
+
 ## 2026-07-10 — Version 0.1.1 release candidate
 
 Result: static/package PASS; GitHub publication and runtime retest pending.

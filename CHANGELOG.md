@@ -2,6 +2,14 @@
 
 This log records repository changes, not unverified runtime claims.
 
+## 0.1.2 — Joined-client movement replay
+
+- Recorded successful host/guest visibility of the shared replica.
+- Schedule one six-update movement sequence for each newly confirmed client.
+- Use the original ten-second delay for the host and a three-second delay after
+  a late-joining guest successfully creates its body.
+- Prevent acknowledgements from repeatedly restarting the test for one client.
+
 ## 0.1.1 — Public updater and guest retry correction
 
 - Added the delayed bounded guest replica-create retry.

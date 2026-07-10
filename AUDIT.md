@@ -5,7 +5,7 @@ Lua/Java implementation, static tests, and recorded disposable-world results.
 
 ## Architecture found
 
-- `Protocol.lua`: protocol 1, bridge 0.1.1, game 42.19.0 and replica API 1
+- `Protocol.lua`: protocol 1, bridge 0.1.2, game 42.19.0 and replica API 1
   handshake; replica snapshot validation.
 - `BridgeServer.lua`: listen-server handshake registry and session-only test
   replica records; directed create/update delivery and a bounded movement demo.
@@ -60,7 +60,7 @@ are implemented but not runtime-verified.
 | Guest handshake/API readiness | Working but Untested | Same code path exists; no guest evidence. |
 | Java create/update/destroy API | Working but Untested | Create/update have runtime evidence; destroy only static coverage. |
 | Cleanup on map change | Working but Untested | `OnPreMapLoad` calls clear-all; lifecycle ordering unverified. |
-| Shared NPC creation | Working but Untested | Fixed shared ID and accepted-client delivery exist; no guest evidence. |
+| Shared NPC creation | Confirmed Working | Host and Steam-invited guest saw the same shared test replica after delayed retry. |
 | Persistent identity | Missing | No UUID or saved identity record. |
 | Duplicate prevention | Partial | Java map prevents repeated live IDs; no orphan/reload/reconcile protection. |
 | Position synchronization | Partial | Broadcast exists but lacks guest evidence, interpolation, and gap recovery. |
@@ -74,7 +74,7 @@ are implemented but not runtime-verified.
 | Inventory/equipment authority | Missing | Only an outfit string is sent on creation. |
 | Vehicle state | Missing | No implementation. |
 | Bridge persistence/reload | Missing | All canonical tables are session-only. |
-| Late join/reconnect | Partial | Shared snapshot reached guest, but creation failed on an unloaded square; delayed retry fix is untested. |
+| Late join/reconnect | Partial | Delayed retry produced a visible guest body; disconnect/reconnect remains untested. |
 | Disconnect handling | Partial | Tick reconciliation marks accepted clients offline; runtime record remains. |
 | Diagnostics | Partial | Debug-gated logs and packet/presence/revision/lookup counters exist; no UI. |
 | Personality/memory/trust | Missing | Future living-NPC systems. |
