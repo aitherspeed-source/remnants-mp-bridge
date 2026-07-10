@@ -46,9 +46,17 @@ progress; runtime verification of the correction remains next.
 ## Blocked
 
 - Phase 1A cannot be accepted without a real Steam-invited guest test.
-- Git branch/history inspection is unavailable because this workspace currently
-  has no `.git` metadata.
 - Project Remnants source and full transformer details are not in the repository.
+
+## Repository and releases
+
+- Public repository: `https://github.com/aitherspeed-source/remnants-mp-bridge`
+- Default branch: `main`
+- Latest release: `v0.1.1`
+- Git history is now available and must be inspected at session start.
+- The release publishes `RemnantsMPBridge-0.1.1.zip` and `latest.json`; the
+  permanent updater verifies the manifest SHA-256 before installation.
+- A local end-to-end updater run from installed 0.1.0 to public 0.1.1 passed.
 
 ## Next exact task
 

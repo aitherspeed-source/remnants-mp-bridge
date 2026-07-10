@@ -12,6 +12,23 @@ Result: static/package PASS; GitHub publication and runtime retest pending.
   the resulting `mod.info` version.
 - Twenty static tests pass.
 
+## 2026-07-10 — Public v0.1.1 release verification
+
+Result: PASS for publication/download integrity; guest runtime retest pending.
+
+- Repository: `https://github.com/aitherspeed-source/remnants-mp-bridge`
+- Release: `https://github.com/aitherspeed-source/remnants-mp-bridge/releases/tag/v0.1.1`
+- GitHub Actions release workflow completed successfully.
+- Public manifest reports version `0.1.1` and the tag-specific asset URL.
+- Downloaded release size: 32,717 bytes.
+- Published SHA-256:
+  `DE1AE13265DC14E1C8BF13DEBA1094CAA9CF7CD3F9A385BFB2D86365859CCB99`.
+- Downloaded asset hash matched the manifest.
+- End-to-end updater test passed locally: it detected installed `0.1.0`,
+  downloaded public `0.1.1`, verified the checksum, installed both root and
+  versioned mod layouts plus the companion, backed up launch JSON, and verified
+  installed `mod.info` version `0.1.1`.
+
 ## 2026-07-10 — First real guest shared-replica attempt
 
 Result: FAIL, diagnosed.

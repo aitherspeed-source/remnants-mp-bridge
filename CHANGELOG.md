@@ -9,6 +9,8 @@ This log records repository changes, not unverified runtime claims.
 - Added public repository README, release workflow, and repository hygiene.
 - Made bundle names derive from `mod.info` version.
 - Expanded the static suite to 20 passing tests.
+- Published the public repository and GitHub Release `v0.1.1`.
+- Verified the public `latest.json` endpoint and downloaded asset checksum.
 
 ## 2026-07-10 — Guest streamed-cell retry correction
 
