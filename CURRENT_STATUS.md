@@ -38,7 +38,7 @@ lifecycle spike; it is not yet a gameplay bridge.
 
 ## Currently being worked on
 
-Version 0.1.3 packaging correction is in progress. Each newly confirmed client gets
+Version 0.1.3 packaging correction is published. Each newly confirmed client gets
 one bounded server-driven movement sequence so host and guest can observe the
 same revisions together.
 
@@ -51,12 +51,12 @@ same revisions together.
 
 - Public repository: `https://github.com/aitherspeed-source/remnants-mp-bridge`
 - Default branch: `main`
-- Latest release being prepared: `v0.1.3`
+- Latest release: `v0.1.3`
 - Git history is now available and must be inspected at session start.
 - The release publishes a versioned ZIP and `latest.json`; the
   permanent updater verifies the manifest SHA-256 before installation.
 - A local end-to-end updater run from installed 0.1.0 to public 0.1.1 passed.
-- Twenty-one static tests pass for 0.1.2; two-player movement replay is the next
+- Twenty-two static tests pass for 0.1.3; two-player movement replay is the next
   runtime checkpoint.
 
 ## Next exact task

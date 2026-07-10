@@ -13,6 +13,19 @@ Result: FAIL, root cause confirmed.
   compared the byte-different files.
 - Version 0.1.3 normalizes packaged runtime text and adds an exact-byte test.
 
+## 2026-07-10 — Public v0.1.3 deterministic-package verification
+
+Result: PASS; multiplayer reconnect pending.
+
+- Release asset: `RemnantsMPBridge-0.1.3.zip`, 32,727 bytes.
+- Release SHA-256:
+  `9EE4AC499CE39AF35B8A12AAD8AF750B6EA3CFBA4696858E0B639609AAFD4814`.
+- Public manifest and downloaded ZIP hashes match.
+- Released versioned `Protocol.lua` and the host's deployed `Protocol.lua` have
+  the exact same SHA-256:
+  `C5EFDFDA1EBA4FBD7819F9545104388DE5E5DC7A97D8B70A39EE0BA9394F30EA`.
+- Twenty-two static tests pass, including exact release/source byte equality.
+
 ## 2026-07-10 — Guest visibility retest
 
 Result: PASS for shared body visibility.
