@@ -1,5 +1,15 @@
 # Test Results
 
+## 2026-07-10 — Public v0.1.4 reconnect checkpoint release
+
+Result: publication PASS; live reconnect pending.
+
+- Release asset: `RemnantsMPBridge-0.1.4.zip`, 32,976 bytes.
+- SHA-256:
+  `97C0AF8BB41B524A0D6CC3ED3867DC3F387CF9300D150652FC77618E6A11D19E`.
+- Public latest manifest reports 0.1.4 and the correct asset URL.
+- Twenty-three static tests pass.
+
 ## 2026-07-10 — Two-player synchronized movement
 
 Result: PASS.

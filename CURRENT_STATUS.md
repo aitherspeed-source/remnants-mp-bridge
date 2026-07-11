@@ -52,13 +52,13 @@ guest reconnect and duplicate prevention are the active checkpoint.
 
 - Public repository: `https://github.com/aitherspeed-source/remnants-mp-bridge`
 - Default branch: `main`
-- Latest release being prepared: `v0.1.4`
+- Latest release: `v0.1.4`
 - Git history is now available and must be inspected at session start.
 - The release publishes a versioned ZIP and `latest.json`; the
   permanent updater verifies the manifest SHA-256 before installation.
 - A local end-to-end updater run from installed 0.1.0 to public 0.1.1 passed.
-- Twenty-two static tests pass for 0.1.3. Host installation, public release, and
-  updater all report 0.1.3 with matching runtime file hashes.
+- Twenty-three static tests pass for 0.1.4. Live guest reconnect is the next
+  runtime checkpoint.
 
 ## Next exact task
 
