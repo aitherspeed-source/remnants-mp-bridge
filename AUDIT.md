@@ -63,7 +63,7 @@ are implemented but not runtime-verified.
 | Shared NPC creation | Confirmed Working | Host and Steam-invited guest saw the same shared test replica after delayed retry. |
 | Persistent identity | Missing | No UUID or saved identity record. |
 | Duplicate prevention | Partial | Java map prevents repeated live IDs; no orphan/reload/reconcile protection. |
-| Position synchronization | Partial | Broadcast exists but lacks guest evidence, interpolation, and gap recovery. |
+| Position synchronization | Confirmed Working | Revisions 8-13 were broadcast to host/guest and both acknowledged each update; still teleport-only without interpolation. |
 | Animation and direction | Missing | No fields or Java setters. |
 | AI ownership | Missing | Replica AI disabled; planned host-worker election absent. |
 | Target selection | Missing | No implementation. |

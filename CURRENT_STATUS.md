@@ -38,9 +38,9 @@ lifecycle spike; it is not yet a gameplay bridge.
 
 ## Currently being worked on
 
-Version 0.1.3 packaging correction is published. Each newly confirmed client gets
-one bounded server-driven movement sequence so host and guest can observe the
-same revisions together.
+Version 0.1.3 passed shared guest visibility and synchronized movement. Revisions
+8-13 were broadcast to two recipients and acknowledged by both host and guest.
+Guest reconnect and duplicate prevention are the active checkpoint.
 
 ## Blocked
 
@@ -56,14 +56,15 @@ same revisions together.
 - The release publishes a versioned ZIP and `latest.json`; the
   permanent updater verifies the manifest SHA-256 before installation.
 - A local end-to-end updater run from installed 0.1.0 to public 0.1.1 passed.
-- Twenty-two static tests pass for 0.1.3; two-player movement replay is the next
-  runtime checkpoint.
+- Twenty-two static tests pass for 0.1.3. Host installation, public release, and
+  updater all report 0.1.3 with matching runtime file hashes.
 
 ## Next exact task
 
-Publish/install 0.1.3, restart both clients, join and teleport together, then
-confirm that guest creation schedules six shared transform revisions after a
-three-second delay. Compare both views and logs. Do not add follow AI yet.
+Have the guest reconnect to the still-running `NPCMPTest` session. Confirm the
+same `bridge-test-shared-001` appears exactly once on the guest, the host retains
+exactly one body, and the server receives `created=true` at revision 13 without
+creating a second canonical record. Do not add follow AI yet.
 
 ## Files expected to be involved
 

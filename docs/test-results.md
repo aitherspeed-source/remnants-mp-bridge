@@ -1,5 +1,19 @@
 # Test Results
 
+## 2026-07-10 — Two-player synchronized movement
+
+Result: PASS.
+
+- Host `IntellectualNobo` and guest `Unofficial.Insomniac` both created
+  `bridge-test-shared-001`.
+- Guest confirmation scheduled the three-second delayed movement replay.
+- Server broadcast revisions 8, 9, 10, 11, 12, and 13 to two recipients.
+- Both host and guest returned `created=true detail=updated` for every revision.
+- Both players visually observed the same three-second teleport movement.
+- Sequence completed at canonical revision 13.
+- Server later detected the guest offline; reconnect/duplicate behavior remains
+  the next checkpoint.
+
 ## 2026-07-10 — v0.1.2 multiplayer file mismatch diagnosis
 
 Result: FAIL, root cause confirmed.

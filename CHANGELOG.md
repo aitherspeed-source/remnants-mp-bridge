@@ -8,6 +8,8 @@ This log records repository changes, not unverified runtime claims.
   release Lua files to CRLF while local server files used LF.
 - Normalize packaged Lua and `mod.info` files to UTF-8 without BOM and LF.
 - Added Git attributes and an exact-byte release regression test.
+- Runtime checkpoint passed: host and guest observed the shared six-revision
+  movement sequence, and the server received matching acknowledgements.
 
 ## 0.1.2 — Joined-client movement replay
 
