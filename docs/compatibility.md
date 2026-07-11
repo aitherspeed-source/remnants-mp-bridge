@@ -38,6 +38,6 @@ Populate this table from the final `Mods=` and `WorkshopItems=` lists before Pha
 | Mod ID | Workshop ID | Version/hash | Category | Result | Disabled bridge feature | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | ProjectRemnants | 3738362476 | pending | Java/NPC framework | required | none | Exact jar hash must match both clients. |
-| RemnantsMPBridge | public release | 0.1.3 | networking bridge | baseline | none | Protocol 1. |
+| RemnantsMPBridge | public release | 0.1.4 | networking bridge | baseline | none | Protocol 1. |
 
 Test the base pair first, then add the normal collection in small groups. If a group fails, bisect that group until the conflicting mod is identified. Never diagnose a compatibility failure in the real save.

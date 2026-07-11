@@ -33,7 +33,8 @@ With the companion and current bridge installed:
    while the host must not create a second body.
 4. Observe both views for ten minutes. Compare reported positions and revisions.
 5. Have the guest disconnect and reconnect; confirm exactly one guest body and
-   the same canonical ID.
+   the same canonical ID. In 0.1.4+, the reconnect must log `reconnect snapshot`
+   and trigger one new six-step movement replay visible to both players.
 6. Exit to the menu and confirm pre-map-load cleanup reports one removed body.
 
 Any guest result remains unconfirmed until both client logs and the listen-server

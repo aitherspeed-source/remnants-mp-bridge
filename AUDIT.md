@@ -5,7 +5,7 @@ Lua/Java implementation, static tests, and recorded disposable-world results.
 
 ## Architecture found
 
-- `Protocol.lua`: protocol 1, bridge 0.1.3, game 42.19.0 and replica API 1
+- `Protocol.lua`: protocol 1, bridge 0.1.4, game 42.19.0 and replica API 1
   handshake; replica snapshot validation.
 - `BridgeServer.lua`: listen-server handshake registry and session-only test
   replica records; directed create/update delivery and a bounded movement demo.

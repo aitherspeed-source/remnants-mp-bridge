@@ -2,6 +2,15 @@
 
 This log records repository changes, not unverified runtime claims.
 
+## 0.1.4 — Reconnect reconciliation checkpoint
+
+- Detect a live-session reconnect after server presence marked a client offline.
+- Re-send the existing canonical replica snapshot instead of creating a new
+  server record.
+- After the reconnecting client confirms its body, replay the bounded movement
+  sequence for both players as a visible authoritative-correction test.
+- Track reconnect count in server diagnostics.
+
 ## 0.1.3 — Deterministic multiplayer file packaging
 
 - Fixed the client/server mismatch caused by GitHub's Windows runner converting

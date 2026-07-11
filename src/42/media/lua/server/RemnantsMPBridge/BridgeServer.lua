@@ -243,6 +243,7 @@ function Server.onHello(playerObj, args)
     local key = playerKey(playerObj)
     local now = nowMs()
     local existing = Server.clients[key]
+    local reconnecting = existing ~= nil and existing.present == false
     if existing and now > 0 and existing.lastHelloAt > 0
             and now - existing.lastHelloAt < Server.HELLO_RATE_LIMIT_MS then
         sendHelloResult(playerObj, false, "hello-rate-limited")
@@ -270,6 +271,18 @@ function Server.onHello(playerObj, args)
         .. " serverGame=" .. Protocol.gameVersion())
     sendHelloResult(playerObj, accepted, reason)
     if accepted then
+        if reconnecting then
+            local replica = Server.replicas[Server.SHARED_TEST_REPLICA_ID]
+            if replica then
+                replica.movementScheduledClients = replica.movementScheduledClients or {}
+                replica.movementScheduledClients[key] = nil
+                replica.reconnectCount = (replica.reconnectCount or 0) + 1
+                Protocol.debug("reconnect snapshot player=" .. key
+                    .. " bridgeId=" .. replica.bridgeId
+                    .. " revision=" .. tostring(replica.revision)
+                    .. " reconnectCount=" .. tostring(replica.reconnectCount))
+            end
+        end
         Server.ensureTestReplica(playerObj)
     end
 end
@@ -388,6 +401,9 @@ function Server.diagnosticSnapshot()
         clients = clientCount,
         packetCounts = Server.packetCounts,
         invalidReplicaLookups = Server.invalidReplicaLookups,
+        reconnectCount = Server.replicas[Server.SHARED_TEST_REPLICA_ID]
+            and (Server.replicas[Server.SHARED_TEST_REPLICA_ID].reconnectCount or 0)
+            or 0,
     }
 end
 

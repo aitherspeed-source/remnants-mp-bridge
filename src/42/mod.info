@@ -2,5 +2,5 @@ name=Remnants MP Bridge
 id=RemnantsMPBridge
 description=Private Build 42 multiplayer authority and synchronization bridge for Project Remnants.
 require=ProjectRemnants
-version=0.1.3
+version=0.1.4
 versionMin=42.19.0

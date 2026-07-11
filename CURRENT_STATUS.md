@@ -40,7 +40,8 @@ lifecycle spike; it is not yet a gameplay bridge.
 
 Version 0.1.3 passed shared guest visibility and synchronized movement. Revisions
 8-13 were broadcast to two recipients and acknowledged by both host and guest.
-Guest reconnect and duplicate prevention are the active checkpoint.
+Version 0.1.4 adds reconnect reconciliation plus a visible movement replay;
+guest reconnect and duplicate prevention are the active checkpoint.
 
 ## Blocked
 
@@ -51,7 +52,7 @@ Guest reconnect and duplicate prevention are the active checkpoint.
 
 - Public repository: `https://github.com/aitherspeed-source/remnants-mp-bridge`
 - Default branch: `main`
-- Latest release: `v0.1.3`
+- Latest release being prepared: `v0.1.4`
 - Git history is now available and must be inspected at session start.
 - The release publishes a versioned ZIP and `latest.json`; the
   permanent updater verifies the manifest SHA-256 before installation.
@@ -61,10 +62,11 @@ Guest reconnect and duplicate prevention are the active checkpoint.
 
 ## Next exact task
 
-Have the guest reconnect to the still-running `NPCMPTest` session. Confirm the
+Install 0.1.4, then have the guest reconnect to the still-running `NPCMPTest` session. Confirm the
 same `bridge-test-shared-001` appears exactly once on the guest, the host retains
-exactly one body, and the server receives `created=true` at revision 13 without
-creating a second canonical record. Do not add follow AI yet.
+exactly one body, and the server receives `created=true` without creating a
+second canonical record. Both players must then observe the reconnect-triggered
+six-step movement replay. Do not add follow AI yet.
 
 ## Files expected to be involved
 
