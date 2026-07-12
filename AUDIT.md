@@ -59,7 +59,7 @@ are implemented but not runtime-verified.
 | Host transform transport | Confirmed Working | Recorded revisions 2-5 at four world squares. |
 | Guest handshake/API readiness | Working but Untested | Same code path exists; no guest evidence. |
 | Java create/update/destroy API | Working but Untested | Create/update have runtime evidence; destroy only static coverage. |
-| Cleanup on map change | Working but Untested | `OnPreMapLoad` calls clear-all; lifecycle ordering unverified. |
+| Cleanup on map change | Partial | Three reloads had no duplicate, but Java forgot a stale reference instead of logging explicit destruction. |
 | Shared NPC creation | Confirmed Working | Host and Steam-invited guest saw the same shared test replica after delayed retry. |
 | Persistent identity | Missing | No UUID or saved identity record. |
 | Duplicate prevention | Partial | Java map prevents repeated live IDs; no orphan/reload/reconcile protection. |
@@ -81,6 +81,12 @@ are implemented but not runtime-verified.
 | Jobs/schedules/settlements | Missing | Future community/world systems. |
 | Project Remnants save safety in MP | Broken | Recorded `NPCFW_Data.bin` shrink and lost companion after player-death failover. |
 | Player-slot/database isolation | Unknown | Designed for it, but sustained two-client evidence is absent. |
+
+Three solo host reloads subsequently produced exactly one bridge body and one
+session registry record each time, with Project Remnants reporting `Saved 0
+NPCs`. This confirms reload duplicate prevention for the current test replica;
+explicit cleanup ordering remains unknown because the Java watcher reported
+forgetting one stale reference as the Lua environment changed.
 
 ## Highest risks and technical debt
 

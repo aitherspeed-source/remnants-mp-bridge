@@ -10,6 +10,8 @@ This log records repository changes, not unverified runtime claims.
 - After the reconnecting client confirms its body, replay the bounded movement
   sequence for both players as a visible authoritative-correction test.
 - Track reconnect count in server diagnostics.
+- Recorded a passed three-cycle solo host reload with one body per cycle and no
+  bridge-originated Lua error.
 
 ## 0.1.3 — Deterministic multiplayer file packaging
 

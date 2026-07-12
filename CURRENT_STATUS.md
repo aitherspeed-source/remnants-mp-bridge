@@ -43,6 +43,10 @@ Version 0.1.3 passed shared guest visibility and synchronized movement. Revision
 Version 0.1.4 adds reconnect reconciliation plus a visible movement replay;
 guest reconnect and duplicate prevention are the active checkpoint.
 
+The solo host reload checkpoint passed across three loads: exactly one canonical
+record/body each time, movement began each session, and no duplicate appeared.
+The observed Lua error was vanilla Muldraugh mannequin-zone data, not the bridge.
+
 ## Blocked
 
 - Phase 1A cannot be accepted without a real Steam-invited guest test.
@@ -62,7 +66,10 @@ guest reconnect and duplicate prevention are the active checkpoint.
 
 ## Next exact task
 
-Install 0.1.4, then have the guest reconnect to the still-running `NPCMPTest` session. Confirm the
+When the guest is available, install 0.1.4 and run the live reconnect test. In
+the meantime, run the solo streamed-cell separation/return test: move far enough
+to unload the replica area, wait, return, and confirm exactly one body. The later
+guest test must still confirm the
 same `bridge-test-shared-001` appears exactly once on the guest, the host retains
 exactly one body, and the server receives `created=true` without creating a
 second canonical record. Both players must then observe the reconnect-triggered

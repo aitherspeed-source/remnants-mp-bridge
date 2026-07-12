@@ -1,5 +1,23 @@
 # Test Results
 
+## 2026-07-12 — Three-cycle solo host reload
+
+Result: PASS for session cleanup/recreation and duplicate prevention.
+
+- The same disposable hosted world was loaded three times.
+- Exactly one bridge replica appeared in every cycle and moved each session.
+- No duplicate body or second canonical registration was observed.
+- Recorded adjacent spawn squares varied (`12025.5,6915.5` and
+  `12025.5,6914.5`), so placement is not a fixed exact square; it follows the
+  reachable-adjacent selection design.
+- Project Remnants reported `Saved 0 NPCs`, consistent with persistence
+  detachment.
+- The visible Lua error was vanilla `Lua(Vanilla).handleMannequinZone` for
+  Muldraugh coordinates `13583,1299,0`; no bridge Lua stack trace occurred.
+- Java reported forgetting one stale replica reference during Lua environment
+  replacement. No body survived into the next session, but explicit cleanup
+  ordering remains a technical risk to investigate later.
+
 ## 2026-07-10 — Public v0.1.4 reconnect checkpoint release
 
 Result: publication PASS; live reconnect pending.
