@@ -1,5 +1,19 @@
 # Test Results
 
+## 2026-07-12 — Solo separation and return
+
+Result: visual PASS; streamed-cell unload UNKNOWN.
+
+- Admin teleport command did not work, so the host ran far away and returned.
+- Exactly one replica remained visible and behaved normally on return.
+- No `RemnantsMPBridge` Lua error or duplicate was logged.
+- The recurring vanilla Muldraugh mannequin-zone error remained unrelated.
+- Server logs also contain world/chunk sanity errors outside bridge code; treat
+  these as disposable-save or broader mod-list noise unless a later bridge
+  correlation is demonstrated.
+- No log proves the replica cell unloaded, so unload/rematerialization is not
+  classified as confirmed.
+
 ## 2026-07-12 — Three-cycle solo host reload
 
 Result: PASS for session cleanup/recreation and duplicate prevention.

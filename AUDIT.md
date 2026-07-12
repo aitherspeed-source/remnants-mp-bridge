@@ -88,23 +88,25 @@ NPCs`. This confirms reload duplicate prevention for the current test replica;
 explicit cleanup ordering remains unknown because the Java watcher reported
 forgetting one stale reference as the Lua environment changed.
 
+A solo run-away/return check retained exactly one visible replica with no bridge
+error. It is evidence for ordinary separation/return, but not confirmed streamed-
+cell rematerialization because cell unload was not measured.
+
 ## Highest risks and technical debt
 
-1. The new shared topology has no real guest runtime evidence yet.
+1. Live guest reconnect still lacks runtime evidence.
 2. Clearing Java references on Lua environment change may orphan a body if
    `OnPreMapLoad` cleanup did not run first.
 3. `NPCManager.spawn()` may have unmeasured local side effects before detachment.
-4. There is no explicit destroy/reconcile lifecycle or disconnect cleanup.
+4. Explicit destroy exists, but reconnect reconciliation remains unverified.
 5. Revision handling rejects stale packets but does not detect gaps or request a
    complete correction.
 6. Direct position changes provide no interpolation, facing, animation, or
    streamed-cell recovery.
-7. Current debug logging is unconditional.
-8. No Git metadata is available, so historical change attribution is unknown.
+7. Debug mode is gated but currently enabled for the Phase 1 spike.
 
-The first guest test subsequently confirmed handshake and shared snapshot
-delivery but not body creation: `NPCManager.spawn()` returned failure until the
-remote square could be loaded. Delayed retries are implemented but unverified.
+The guest test subsequently confirmed delayed creation and synchronized movement
+through revision 13. Live reconnect remains unverified.
 
 ## Important unknowns
 

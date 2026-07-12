@@ -47,6 +47,10 @@ The solo host reload checkpoint passed across three loads: exactly one canonical
 record/body each time, movement began each session, and no duplicate appeared.
 The observed Lua error was vanilla Muldraugh mannequin-zone data, not the bridge.
 
+Solo separation-and-return visually passed: after running far away and returning,
+exactly one replica remained visible and normal. Actual cell unload was not
+proven because the admin teleport command failed and no unload event is logged.
+
 ## Blocked
 
 - Phase 1A cannot be accepted without a real Steam-invited guest test.
@@ -66,10 +70,9 @@ The observed Lua error was vanilla Muldraugh mannequin-zone data, not the bridge
 
 ## Next exact task
 
-When the guest is available, install 0.1.4 and run the live reconnect test. In
-the meantime, run the solo streamed-cell separation/return test: move far enough
-to unload the replica area, wait, return, and confirm exactly one body. The later
-guest test must still confirm the
+When the guest is available, install 0.1.4 and run the live reconnect test. The
+remaining high-value solo checkpoint is rollback/mod removal in the disposable
+world. The later guest test must still confirm the
 same `bridge-test-shared-001` appears exactly once on the guest, the host retains
 exactly one body, and the server receives `created=true` without creating a
 second canonical record. Both players must then observe the reconnect-triggered
