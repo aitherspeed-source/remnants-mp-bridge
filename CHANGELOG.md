@@ -12,6 +12,7 @@ This log records repository changes, not unverified runtime claims.
 - Track reconnect count in server diagnostics.
 - Recorded a passed three-cycle solo host reload with one body per cycle and no
   bridge-originated Lua error.
+- Recorded a passed disposable-world bridge disable/re-enable rollback test.
 
 ## 0.1.3 — Deterministic multiplayer file packaging
 

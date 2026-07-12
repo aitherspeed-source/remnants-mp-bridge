@@ -1,5 +1,14 @@
 # Test Results
 
+## 2026-07-12 — Bridge disable/re-enable rollback
+
+Result: PASS in the disposable hosted world.
+
+- `RemnantsMPBridge` was disabled while Project Remnants remained available.
+- `NPCMPTest` loaded normally and no bridge test replica appeared.
+- Re-enabling the bridge restored exactly one working/moving replica.
+- No save failure or duplicate was observed.
+
 ## 2026-07-12 — Solo separation and return
 
 Result: visual PASS; streamed-cell unload UNKNOWN.

@@ -81,6 +81,7 @@ are implemented but not runtime-verified.
 | Jobs/schedules/settlements | Missing | Future community/world systems. |
 | Project Remnants save safety in MP | Broken | Recorded `NPCFW_Data.bin` shrink and lost companion after player-death failover. |
 | Player-slot/database isolation | Unknown | Designed for it, but sustained two-client evidence is absent. |
+| Bridge disable/re-enable rollback | Confirmed Working | Disposable world loaded without the bridge/replica and restored one working replica after re-enable. |
 
 Three solo host reloads subsequently produced exactly one bridge body and one
 session registry record each time, with Project Remnants reporting `Saved 0

@@ -51,6 +51,9 @@ Solo separation-and-return visually passed: after running far away and returning
 exactly one replica remained visible and normal. Actual cell unload was not
 proven because the admin teleport command failed and no unload event is logged.
 
+Rollback/mod removal passed in `NPCMPTest`: the world loaded with the bridge
+disabled and no test replica, then re-enabling restored one working replica.
+
 ## Blocked
 
 - Phase 1A cannot be accepted without a real Steam-invited guest test.
@@ -71,8 +74,7 @@ proven because the admin teleport command failed and no unload event is logged.
 ## Next exact task
 
 When the guest is available, install 0.1.4 and run the live reconnect test. The
-remaining high-value solo checkpoint is rollback/mod removal in the disposable
-world. The later guest test must still confirm the
+remaining required runtime checkpoint is the live guest reconnect. It must confirm the
 same `bridge-test-shared-001` appears exactly once on the guest, the host retains
 exactly one body, and the server receives `created=true` without creating a
 second canonical record. Both players must then observe the reconnect-triggered
