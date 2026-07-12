@@ -30,7 +30,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         metadata = read("mod.info")
         self.assertIn("id=RemnantsMPBridge", metadata)
         self.assertIn("require=ProjectRemnants", metadata)
-        self.assertIn("version=0.1.4", metadata)
+        self.assertIn("version=0.1.5", metadata)
         self.assertIn("versionMin=42.19.0", metadata)
 
     def test_protocol_is_versioned_and_pinned(self):
@@ -60,7 +60,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertIn("HELLO_RATE_LIMIT_MS", server)
         self.assertNotIn("npcfwSpawn", server)
 
-    def test_first_replica_is_server_issued_inert_and_session_only(self):
+    def test_first_replica_is_server_issued_inert_and_persistent(self):
         protocol = read("media/lua/shared/RemnantsMPBridge/Protocol.lua")
         server = read("media/lua/server/RemnantsMPBridge/BridgeServer.lua")
         client = read("media/lua/client/RemnantsMPBridge/BridgeClient.lua")
@@ -74,7 +74,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertIn("Server.replicas", server)
         self.assertIn("Server.ensureTestReplica(playerObj)", server)
         self.assertIn("Server.MAX_REPLICA_DELIVERIES = 20", server)
-        self.assertNotIn("ModData", server)
+        self.assertIn("ModData.getOrCreate(Server.SAVE_KEY)", server)
         self.assertIn("npcfwReplicaCreate", client)
         self.assertIn("npcfwReplicaSetPosition", client)
         self.assertIn("Client.sendReplicaResult", client)
@@ -99,7 +99,9 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         server = read("media/lua/server/RemnantsMPBridge/BridgeServer.lua")
         client = read("media/lua/client/RemnantsMPBridge/BridgeClient.lua")
         self.assertIn('REPLICA_DESTROY = "replicaDestroy"', protocol)
-        self.assertIn('Server.SHARED_TEST_REPLICA_ID = "bridge-test-shared-001"', server)
+        self.assertIn("Server.persistentReplicaId", server)
+        self.assertIn("getRandomUUID", server)
+        self.assertNotIn("SHARED_TEST_REPLICA_ID", server)
         self.assertNotIn('testReplicaId(key)', server)
         self.assertIn("acceptedOnlinePlayers", server)
         self.assertIn("Server.broadcastReplica", server)
@@ -108,6 +110,21 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertIn("Server.destroyReplica", server)
         self.assertIn("Client.onReplicaDestroy", client)
         self.assertIn('Client.clearReplicas("accepted-handshake-reconcile")', client)
+
+    def test_canonical_identity_save_is_versioned_checked_and_recoverable(self):
+        server = read("media/lua/server/RemnantsMPBridge/BridgeServer.lua")
+        self.assertIn('Server.SAVE_KEY = "RemnantsMPBridge.Canonical"', server)
+        self.assertIn('Server.SAVE_MAGIC = "RMPB"', server)
+        self.assertIn("Server.SAVE_SCHEMA_VERSION = 1", server)
+        self.assertIn("canonicalChecksum", server)
+        self.assertIn('return false, "checksum-mismatch"', server)
+        self.assertIn("Server.saveRoot.backup = copyCanonicalRecord", server)
+        self.assertIn('Server.saveStatus = "recovered-backup"', server)
+        self.assertIn("Events.OnInitGlobalModData.Add(Server.onInitGlobalModData)", server)
+        self.assertIn('Server.persistReplica(replica, "created")', server)
+        self.assertIn('Server.persistReplica(replica, "movement")', server)
+        self.assertIn("appearanceSeed = replica.appearanceSeed", server)
+        self.assertNotIn("ModData.transmit(Server.SAVE_KEY)", server)
 
     def test_failed_guest_create_retries_are_delayed_for_cell_loading(self):
         server = read("media/lua/server/RemnantsMPBridge/BridgeServer.lua")
@@ -135,7 +152,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertIn("replica.reconnectCount = (replica.reconnectCount or 0) + 1", server)
         self.assertIn('Protocol.debug("reconnect snapshot player="', server)
         self.assertIn("Server.ensureTestReplica(playerObj)", server)
-        self.assertIn("reconnectCount = Server.replicas", server)
+        self.assertIn("reconnectCount = Server.persistentReplicaId", server)
 
     def test_phase_one_diagnostics_are_debug_gated(self):
         protocol = read("media/lua/shared/RemnantsMPBridge/Protocol.lua")
@@ -229,7 +246,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertNotIn("NPCFW.jar' -Destination", packager)
 
     def test_private_bundle_zip_contains_only_bridge_runtime(self):
-        bundle = ROOT / "dist/RemnantsMPBridge-0.1.4.zip"
+        bundle = ROOT / "dist/RemnantsMPBridge-0.1.5.zip"
         self.assertTrue(bundle.exists())
         with zipfile.ZipFile(bundle) as archive:
             names = archive.namelist()
@@ -239,7 +256,7 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         self.assertFalse(any(name.endswith(("NPCFW.jar", "projectzomboid.jar")) for name in names))
 
     def test_release_runtime_text_is_lf_and_matches_source(self):
-        bundle = ROOT / "dist/RemnantsMPBridge-0.1.4.zip"
+        bundle = ROOT / "dist/RemnantsMPBridge-0.1.5.zip"
         with zipfile.ZipFile(bundle) as archive:
             protocol_name = next(
                 name for name in archive.namelist()
@@ -269,7 +286,8 @@ class RemnantsMPBridgeStaticTests(unittest.TestCase):
         checklist = doc("test-checklist.md")
         baseline = doc("baseline.md")
         self.assertIn("NPCMPTest", design)
-        self.assertIn("does not alter", rollback)
+        self.assertIn("does not overwrite Project Remnants data", rollback)
+        self.assertIn("namespaced GlobalModData record", rollback)
         self.assertIn("Audit-required categories", compatibility)
         self.assertIn("bisect", compatibility)
         self.assertIn("Expected current result", checklist)

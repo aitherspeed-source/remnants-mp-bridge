@@ -4,7 +4,7 @@ Status labels must be based on acceptance evidence, not code presence.
 
 ## Phase 1: Multiplayer foundation — active
 
-### 1A. Shared inert replica lifecycle — current milestone
+### 1A. Shared inert replica lifecycle — substantially passed; reconnect deferred
 
 - **Purpose:** Prove one server record can produce exactly one corresponding
   inert body on each of two clients.
@@ -15,7 +15,7 @@ Status labels must be based on acceptance evidence, not code presence.
 - **Testing:** `TESTING.md` Foundation F1-F8 with all three logs and save hashes.
 - **Difficulty:** High, because `IsoNPC` is an `IsoPlayer`-derived local entity.
 
-### 1B. Persistent identity and duplicate prevention
+### 1B. Persistent identity and duplicate prevention — current milestone
 
 - **Purpose:** Preserve a canonical NPC across hosted-world reloads.
 - **Dependencies:** 1A passed; stable replica cleanup/reconciliation.

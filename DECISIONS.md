@@ -73,3 +73,17 @@ performance evidence is recorded.
 - **Consequences:** Bridge source is public. Project Remnants/game binaries remain
   excluded. Tag releases publish a ZIP and `latest.json`; the updater refuses a
   checksum mismatch and preserves the installed copy on download failure.
+
+## D-009: Server GlobalModData for canonical identity v1
+
+- **Decision:** Store the minimal canonical NPC record under server
+  `ModData.getOrCreate("RemnantsMPBridge.Canonical")` with magic `RMPB`, schema
+  version 1, checksum, primary record, and previous-valid backup.
+- **Reason:** Build 42 provides this server save lifecycle directly, it stays
+  inside the disposable world save, and it avoids Project Remnants' client-local
+  `NPCFW_Data.bin`.
+- **Alternatives:** Custom filesystem save; reuse `NPCFW_Data.bin`; keep a fixed
+  session ID.
+- **Consequences:** Clients never write or receive raw canonical ModData. Save
+  recovery can fall back one revision. A later schema requires explicit migration
+  code; filesystem-level atomic generation files remain a future hardening option.

@@ -4,8 +4,8 @@ Last updated: 2026-07-10.
 
 ## Current milestone
 
-Phase 1A: Shared inert replica lifecycle. The project is still a transport and
-lifecycle spike; it is not yet a gameplay bridge.
+Phase 1B: Persistent identity and duplicate prevention. Phase 1A live reconnect
+is explicitly deferred, not confirmed. The project is not yet a gameplay bridge.
 
 ## Completed with evidence
 
@@ -43,6 +43,9 @@ Version 0.1.3 passed shared guest visibility and synchronized movement. Revision
 Version 0.1.4 adds reconnect reconciliation plus a visible movement replay;
 guest reconnect and duplicate prevention are the active checkpoint.
 
+Version 0.1.5 implements the first server-owned canonical identity save using
+Build 42 GlobalModData. Runtime restart verification is now active.
+
 The solo host reload checkpoint passed across three loads: exactly one canonical
 record/body each time, movement began each session, and no duplicate appeared.
 The observed Lua error was vanilla Muldraugh mannequin-zone data, not the bridge.
@@ -63,22 +66,20 @@ disabled and no test replica, then re-enabling restored one working replica.
 
 - Public repository: `https://github.com/aitherspeed-source/remnants-mp-bridge`
 - Default branch: `main`
-- Latest release: `v0.1.4`
+- Latest release being prepared: `v0.1.5`
 - Git history is now available and must be inspected at session start.
 - The release publishes a versioned ZIP and `latest.json`; the
   permanent updater verifies the manifest SHA-256 before installation.
 - A local end-to-end updater run from installed 0.1.0 to public 0.1.1 passed.
-- Twenty-three static tests pass for 0.1.4. Live guest reconnect is the next
-  runtime checkpoint.
+- Twenty-four static tests pass for 0.1.5. Persistent-ID restart verification is
+  the next runtime checkpoint.
 
 ## Next exact task
 
-When the guest is available, install 0.1.4 and run the live reconnect test. The
-remaining required runtime checkpoint is the live guest reconnect. It must confirm the
-same `bridge-test-shared-001` appears exactly once on the guest, the host retains
-exactly one body, and the server receives `created=true` without creating a
-second canonical record. Both players must then observe the reconnect-triggered
-six-step movement replay. Do not add follow AI yet.
+Install 0.1.5 and load `NPCMPTest`. Record the generated `rmp-...` ID from the
+listen-server log, allow movement to finish, restart the hosted world five times,
+and confirm every restore uses the exact same ID with increasing revision and
+one body. Live guest reconnect remains deferred. Do not add follow AI yet.
 
 ## Files expected to be involved
 
@@ -97,5 +98,5 @@ save/player-database hashes.
 
 ## Do not start yet
 
-Persistent saves, AI ownership, commands, combat, inventory, vehicles,
+AI ownership, commands, combat, inventory, vehicles,
 personality, memories, trust, jobs, schedules, and settlements.

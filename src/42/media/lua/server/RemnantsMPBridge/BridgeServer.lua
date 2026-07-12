@@ -8,7 +8,12 @@ Server.clients = Server.clients or {}
 Server.replicas = Server.replicas or {}
 Server.packetCounts = Server.packetCounts or { sent = {}, received = {} }
 Server.invalidReplicaLookups = Server.invalidReplicaLookups or 0
-Server.SHARED_TEST_REPLICA_ID = "bridge-test-shared-001"
+Server.SAVE_KEY = "RemnantsMPBridge.Canonical"
+Server.SAVE_MAGIC = "RMPB"
+Server.SAVE_SCHEMA_VERSION = 1
+Server.saveRoot = Server.saveRoot or nil
+Server.saveStatus = Server.saveStatus or "not-loaded"
+Server.persistentReplicaId = Server.persistentReplicaId or nil
 Server.HELLO_RATE_LIMIT_MS = 1000
 Server.MAX_REPLICA_DELIVERIES = 20
 Server.REPLICA_RETRY_INTERVAL_MS = 3000
@@ -32,6 +37,141 @@ end
 local function countPacket(direction, command)
     local counts = Server.packetCounts[direction]
     counts[command] = (counts[command] or 0) + 1
+end
+
+local function copyCanonicalRecord(record)
+    if type(record) ~= "table" then return nil end
+    return {
+        magic = record.magic,
+        schemaVersion = record.schemaVersion,
+        bridgeId = record.bridgeId,
+        revision = record.revision,
+        displayName = record.displayName,
+        female = record.female == true,
+        outfit = record.outfit,
+        appearanceSeed = record.appearanceSeed,
+        x = record.x,
+        y = record.y,
+        z = record.z,
+        checksum = record.checksum,
+    }
+end
+
+local function canonicalText(record)
+    return table.concat({
+        tostring(record.magic or ""),
+        tostring(record.schemaVersion or ""),
+        tostring(record.bridgeId or ""),
+        tostring(record.revision or ""),
+        tostring(record.displayName or ""),
+        record.female == true and "1" or "0",
+        tostring(record.outfit or ""),
+        tostring(record.appearanceSeed or ""),
+        tostring(record.x or ""),
+        tostring(record.y or ""),
+        tostring(record.z or ""),
+    }, "|")
+end
+
+local function canonicalChecksum(record)
+    local hash = 5381
+    local text = canonicalText(record)
+    for index = 1, #text do
+        hash = (hash * 33 + string.byte(text, index)) % 2147483647
+    end
+    return tostring(hash)
+end
+
+local function validateCanonicalRecord(record)
+    if type(record) ~= "table" then return false, "missing-record" end
+    if record.magic ~= Server.SAVE_MAGIC then return false, "magic-mismatch" end
+    if tonumber(record.schemaVersion) ~= Server.SAVE_SCHEMA_VERSION then
+        return false, "schema-mismatch"
+    end
+    local valid, reason = Protocol.validateReplicaSnapshot(record)
+    if not valid then return false, reason end
+    if tostring(record.checksum or "") ~= canonicalChecksum(record) then
+        return false, "checksum-mismatch"
+    end
+    return true, "valid"
+end
+
+local function persistentReplicaId()
+    local value = getRandomUUID and getRandomUUID() or nil
+    if not value or tostring(value) == "" then
+        value = tostring(nowMs()) .. "-" .. tostring(ZombRand and ZombRand(1000000000) or 0)
+    end
+    return string.sub("rmp-" .. tostring(value), 1, 128)
+end
+
+function Server.persistReplica(replica, reason)
+    if not Server.saveRoot or not replica then return false end
+    local nextRecord = {
+        magic = Server.SAVE_MAGIC,
+        schemaVersion = Server.SAVE_SCHEMA_VERSION,
+        bridgeId = replica.bridgeId,
+        revision = replica.revision,
+        displayName = replica.displayName,
+        female = replica.female == true,
+        outfit = replica.outfit,
+        appearanceSeed = replica.appearanceSeed,
+        x = replica.x,
+        y = replica.y,
+        z = replica.z,
+    }
+    nextRecord.checksum = canonicalChecksum(nextRecord)
+    local currentValid = validateCanonicalRecord(Server.saveRoot.primary)
+    if currentValid then
+        Server.saveRoot.backup = copyCanonicalRecord(Server.saveRoot.primary)
+    end
+    Server.saveRoot.primary = nextRecord
+    Server.saveRoot.lastWriteReason = tostring(reason or "state-change")
+    Server.saveRoot.schemaVersion = Server.SAVE_SCHEMA_VERSION
+    Server.saveStatus = "saved"
+    Protocol.debug("persisted bridgeId=" .. replica.bridgeId
+        .. " revision=" .. tostring(replica.revision)
+        .. " reason=" .. Server.saveRoot.lastWriteReason)
+    return true
+end
+
+function Server.onInitGlobalModData(isNewGame)
+    Server.saveRoot = ModData.getOrCreate(Server.SAVE_KEY)
+    local primaryValid, primaryReason = validateCanonicalRecord(Server.saveRoot.primary)
+    local record = nil
+    if primaryValid then
+        record = copyCanonicalRecord(Server.saveRoot.primary)
+        Server.saveStatus = "loaded-primary"
+    else
+        local backupValid = validateCanonicalRecord(Server.saveRoot.backup)
+        if backupValid then
+            record = copyCanonicalRecord(Server.saveRoot.backup)
+            Server.saveRoot.primary = copyCanonicalRecord(record)
+            Server.saveStatus = "recovered-backup"
+        else
+            Server.saveStatus = isNewGame and "new-world" or "no-valid-record"
+        end
+    end
+    if record then
+        Server.persistentReplicaId = record.bridgeId
+        Server.replicas[record.bridgeId] = {
+            bridgeId = record.bridgeId,
+            revision = tonumber(record.revision),
+            displayName = record.displayName,
+            female = record.female == true,
+            outfit = record.outfit,
+            appearanceSeed = tonumber(record.appearanceSeed) or 0,
+            x = tonumber(record.x), y = tonumber(record.y), z = tonumber(record.z),
+            spawnSource = Server.saveStatus,
+            path = {}, pathIndex = 0, updatesRemaining = 0, nextMoveAt = 0,
+            deliveries = {},
+        }
+        print("[RemnantsMPBridge] restored canonical replica " .. record.bridgeId
+            .. " revision=" .. tostring(record.revision)
+            .. " source=" .. Server.saveStatus)
+    else
+        Protocol.debug("canonical save unavailable reason=" .. tostring(primaryReason)
+            .. " status=" .. Server.saveStatus)
+    end
 end
 
 local function sendHelloResult(playerObj, accepted, reason)
@@ -145,6 +285,7 @@ function Server.sendReplica(playerObj, replica, command)
         displayName = replica.displayName,
         female = replica.female,
         outfit = replica.outfit,
+        appearanceSeed = replica.appearanceSeed,
         spawnSource = replica.spawnSource,
         x = replica.x,
         y = replica.y,
@@ -209,7 +350,11 @@ end
 
 function Server.ensureTestReplica(playerObj)
     local key = playerKey(playerObj)
-    local bridgeId = Server.SHARED_TEST_REPLICA_ID
+    local bridgeId = Server.persistentReplicaId
+    if not bridgeId then
+        bridgeId = persistentReplicaId()
+        Server.persistentReplicaId = bridgeId
+    end
     local replica = Server.replicas[bridgeId]
     if not replica then
         local x, y, z = safeReplicaPosition(playerObj)
@@ -223,6 +368,7 @@ function Server.ensureTestReplica(playerObj)
             displayName = "Bridge Test Replica",
             female = false,
             outfit = "SURVIVOR",
+            appearanceSeed = ZombRand and ZombRand(2147483647) or 0,
             x = x,
             y = y,
             z = z,
@@ -234,7 +380,10 @@ function Server.ensureTestReplica(playerObj)
             deliveries = {},
         }
         Server.replicas[bridgeId] = replica
-        print("[RemnantsMPBridge] registered session-only inert replica " .. bridgeId)
+        Server.persistReplica(replica, "created")
+        print("[RemnantsMPBridge] registered persistent inert replica " .. bridgeId)
+    elseif #(replica.path or {}) == 0 then
+        replica.path = reachableReplicaPath(playerObj)
     end
     Server.sendReplica(playerObj, replica)
 end
@@ -272,7 +421,8 @@ function Server.onHello(playerObj, args)
     sendHelloResult(playerObj, accepted, reason)
     if accepted then
         if reconnecting then
-            local replica = Server.replicas[Server.SHARED_TEST_REPLICA_ID]
+            local replica = Server.persistentReplicaId
+                and Server.replicas[Server.persistentReplicaId] or nil
             if replica then
                 replica.movementScheduledClients = replica.movementScheduledClients or {}
                 replica.movementScheduledClients[key] = nil
@@ -380,6 +530,7 @@ function Server.onTick()
                 replica.revision = replica.revision + 1
                 replica.updatesRemaining = replica.updatesRemaining - 1
                 replica.nextMoveAt = now + Server.MOVEMENT_INTERVAL_MS
+                Server.persistReplica(replica, "movement")
                 Server.broadcastReplica(replica, Protocol.Commands.REPLICA_UPDATE)
                 if replica.updatesRemaining == 0 then
                     print("[RemnantsMPBridge] movement sequence complete for " .. replica.bridgeId
@@ -396,14 +547,16 @@ function Server.diagnosticSnapshot()
     for _ in pairs(Server.replicas) do replicaCount = replicaCount + 1 end
     for _ in pairs(Server.clients) do clientCount = clientCount + 1 end
     return {
-        sharedReplicaId = Server.SHARED_TEST_REPLICA_ID,
+        sharedReplicaId = Server.persistentReplicaId,
         replicas = replicaCount,
         clients = clientCount,
         packetCounts = Server.packetCounts,
         invalidReplicaLookups = Server.invalidReplicaLookups,
-        reconnectCount = Server.replicas[Server.SHARED_TEST_REPLICA_ID]
-            and (Server.replicas[Server.SHARED_TEST_REPLICA_ID].reconnectCount or 0)
+        reconnectCount = Server.persistentReplicaId and Server.replicas[Server.persistentReplicaId]
+            and (Server.replicas[Server.persistentReplicaId].reconnectCount or 0)
             or 0,
+        saveStatus = Server.saveStatus,
+        saveSchemaVersion = Server.SAVE_SCHEMA_VERSION,
     }
 end
 
@@ -426,5 +579,6 @@ end
 
 Events.OnClientCommand.Add(Server.onClientCommand)
 Events.OnTick.Add(Server.onTick)
+Events.OnInitGlobalModData.Add(Server.onInitGlobalModData)
 print("[RemnantsMPBridge] server protocol " .. tostring(Protocol.PROTOCOL_VERSION)
     .. " loaded for game " .. Protocol.TARGET_GAME_VERSION)

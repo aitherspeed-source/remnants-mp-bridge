@@ -22,6 +22,9 @@ This plan deliberately front-loads destructive-risk and networking experiments. 
   accepted-client broadcast, late-join current snapshot, explicit destroy,
   handshake reconciliation, presence tracking, and gated diagnostics. Static
   tests pass; no runtime claim is made until solo and guest checks are run.
+- Version 0.1.5 replaces the hardcoded test ID with a server-generated UUID and
+  a bridge-owned GlobalModData schema containing primary/backup checked records.
+  Static verification passes; five hosted-world restart restores are next.
 
 ## Phase 0 — Permission, baseline, and rollback
 

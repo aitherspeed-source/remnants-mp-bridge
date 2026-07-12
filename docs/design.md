@@ -2,10 +2,10 @@
 
 ## Status
 
-Phase 1 inert-replica spike in progress. The versioned handshake, diagnostics,
-and an independently compiled Java companion extension exist in the repository.
-No NPC persistence or canonical gameplay exists, and no game installation or
-save has been changed.
+Phase 1 persistent-identity spike in progress. The versioned handshake,
+diagnostics, independently compiled Java companion extension, shared replica,
+and schema-1 canonical identity save exist. Persistence is implemented but not
+runtime-verified; canonical gameplay does not exist.
 
 Target runtime: Project Zomboid unstable Build 42.19.0, revision 964, using the in-game **Host** flow (a listen server plus host client), with one invited friend.
 

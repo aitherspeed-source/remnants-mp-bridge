@@ -5,7 +5,7 @@ Lua/Java implementation, static tests, and recorded disposable-world results.
 
 ## Architecture found
 
-- `Protocol.lua`: protocol 1, bridge 0.1.4, game 42.19.0 and replica API 1
+- `Protocol.lua`: protocol 1, bridge 0.1.5, game 42.19.0 and replica API 1
   handshake; replica snapshot validation.
 - `BridgeServer.lua`: listen-server handshake registry and session-only test
   replica records; directed create/update delivery and a bounded movement demo.
@@ -61,7 +61,7 @@ are implemented but not runtime-verified.
 | Java create/update/destroy API | Working but Untested | Create/update have runtime evidence; destroy only static coverage. |
 | Cleanup on map change | Partial | Three reloads had no duplicate, but Java forgot a stale reference instead of logging explicit destruction. |
 | Shared NPC creation | Confirmed Working | Host and Steam-invited guest saw the same shared test replica after delayed retry. |
-| Persistent identity | Missing | No UUID or saved identity record. |
+| Persistent identity | Working but Untested | Server UUID and checked GlobalModData primary/backup implemented; restart runtime pending. |
 | Duplicate prevention | Partial | Java map prevents repeated live IDs; no orphan/reload/reconcile protection. |
 | Position synchronization | Confirmed Working | Revisions 8-13 were broadcast to host/guest and both acknowledged each update; still teleport-only without interpolation. |
 | Animation and direction | Missing | No fields or Java setters. |
@@ -73,7 +73,7 @@ are implemented but not runtime-verified.
 | Combat | Missing | No attack intent or damage transaction. |
 | Inventory/equipment authority | Missing | Only an outfit string is sent on creation. |
 | Vehicle state | Missing | No implementation. |
-| Bridge persistence/reload | Missing | All canonical tables are session-only. |
+| Bridge persistence/reload | Working but Untested | Schema 1 primary/backup and restore implemented; five-restart test pending. |
 | Late join/reconnect | Partial | Delayed retry produced a visible guest body; disconnect/reconnect remains untested. |
 | Disconnect handling | Partial | Tick reconciliation marks accepted clients offline; runtime record remains. |
 | Diagnostics | Partial | Debug-gated logs and packet/presence/revision/lookup counters exist; no UI. |

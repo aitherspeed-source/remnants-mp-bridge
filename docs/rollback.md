@@ -1,6 +1,13 @@
 # Remnants MP Bridge Rollback
 
-The current bridge scaffold does not alter Project Zomboid, Project Remnants, launch JSON, server configuration, or save files.
+The bridge does not overwrite Project Remnants data, player records, or server
+configuration. Its installer changes client launch JSON reversibly, and version
+0.1.5 adds a namespaced record to the disposable hosted-world save.
+
+As of 0.1.5, the bridge writes only its namespaced GlobalModData record inside
+the disposable world save. Disabling the mod leaves that record inert so it can
+be recovered after re-enable. Do not manually remove it until an in-mod recovery
+or delete command exists.
 
 ## Disable the scaffold
 

@@ -1,5 +1,18 @@
 # Test Results
 
+## 2026-07-12 — Canonical identity v1 static checkpoint
+
+Result: static PASS; hosted-world persistence untested.
+
+- Server uses `RemnantsMPBridge.Canonical`, magic `RMPB`, schema version 1.
+- New worlds generate `rmp-<UUID>` once and persist identity, appearance seed,
+  transform, and revision.
+- Each write checksums the canonical field string and retains the previous valid
+  primary as backup.
+- Load prefers a valid primary and recovers a valid backup when primary fails.
+- Raw canonical ModData is never transmitted to clients.
+- Twenty-four static tests pass before runtime deployment.
+
 ## 2026-07-12 — Bridge disable/re-enable rollback
 
 Result: PASS in the disposable hosted world.

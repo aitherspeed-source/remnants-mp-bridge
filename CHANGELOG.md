@@ -2,6 +2,15 @@
 
 This log records repository changes, not unverified runtime claims.
 
+## 0.1.5 — Canonical persistent identity v1
+
+- Replace the hardcoded test ID with a server-generated `rmp-<UUID>`.
+- Persist ID, revision, display identity, appearance seed, transform, and checksum
+  in bridge-owned server GlobalModData.
+- Add magic/schema validation and previous-valid-record recovery.
+- Restore one canonical registry record before client snapshots after world load.
+- Persist every accepted scripted transform revision.
+
 ## 0.1.4 — Reconnect reconciliation checkpoint
 
 - Detect a live-session reconnect after server presence marked a client offline.

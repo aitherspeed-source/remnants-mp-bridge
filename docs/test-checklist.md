@@ -40,6 +40,17 @@ With the companion and current bridge installed:
 Any guest result remains unconfirmed until both client logs and the listen-server
 log show the same ID and revisions.
 
+## Persistent identity checkpoint (0.1.5+)
+
+1. Update and fully restart the game and `NPCMPTest` server.
+2. Record `registered persistent inert replica rmp-...` from `coop-console.txt`.
+3. Let all six movements finish and record the final revision.
+4. Exit cleanly and reload the same hosted world five times.
+5. Each load must log `restored canonical replica` with the exact same `rmp-...`
+   ID, one body, source `loaded-primary`, and a revision no lower than before.
+6. A different ID, duplicate body, `no-valid-record`, or checksum/schema warning
+   fails the checkpoint. Do not test corruption against a real save.
+
 ## Failure checks
 
 - No Lua stack traces from `RemnantsMPBridge`.
