@@ -13,6 +13,16 @@ Result: static PASS; hosted-world persistence untested.
 - Raw canonical ModData is never transmitted to clients.
 - Twenty-four static tests pass before runtime deployment.
 
+## 2026-07-12 — Public v0.1.5 persistence checkpoint release
+
+Result: publication PASS; hosted-world persistence runtime pending.
+
+- Release asset: `RemnantsMPBridge-0.1.5.zip`, 35,168 bytes.
+- SHA-256:
+  `F0F274DEC3264AF6A73D76B67F129EA7F2CAEB4B578BC935A2510233FEB09867`.
+- Public latest manifest reports 0.1.5 and the correct asset URL.
+- The host's local root/versioned deployment is 0.1.5.
+
 ## 2026-07-12 — Bridge disable/re-enable rollback
 
 Result: PASS in the disposable hosted world.

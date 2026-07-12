@@ -66,7 +66,7 @@ disabled and no test replica, then re-enabling restored one working replica.
 
 - Public repository: `https://github.com/aitherspeed-source/remnants-mp-bridge`
 - Default branch: `main`
-- Latest release being prepared: `v0.1.5`
+- Latest release: `v0.1.5`
 - Git history is now available and must be inspected at session start.
 - The release publishes a versioned ZIP and `latest.json`; the
   permanent updater verifies the manifest SHA-256 before installation.
